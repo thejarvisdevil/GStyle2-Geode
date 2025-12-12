@@ -1,0 +1,91 @@
+name: Build Geode Mod
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Geode CLI
+        shell: powershell
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/geode-sdk/cli/releases/download/v3.7.1/geode-cli-v3.7.1-win.zip" -OutFile "geode.zip"
+          Expand-Archive -Path "geode.zip" -DestinationPath "."
+          $exe = Get-ChildItem -Path $PWD -Filter "geode*.exe" -File -Recurse | Select-Object -First 1
+          Add-Content -Path $Env:GITHUB_PATH -Value $exe.DirectoryName
+          Add-Content -Path $Env:GITHUB_ENV -Value "GEODE_CLI=$($exe.FullName)"
+
+      - name: Setup Geode
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Path "$Env:GITHUB_WORKSPACE\FAKEPROFILE\geode\mods" -Force | Out-Null
+          New-Item -ItemType File -Path "$Env:GITHUB_WORKSPACE\FAKEPROFILE\GeometryDash.exe" -Force | Out-Null
+          geode profile add --name GitHub "$Env:GITHUB_WORKSPACE\FAKEPROFILE\GeometryDash.exe" win
+          geode sdk install "$Env:USERPROFILE\Documents\Geode"
+          $Env:GEODE_SDK = "$Env:USERPROFILE\Documents\Geode"
+          Add-Content -Path $Env:GITHUB_ENV -Value "GEODE_SDK=$Env:GEODE_SDK"
+          geode sdk install-binaries --platform win
+
+      - name: Build Geode Mod (Windows)
+        shell: powershell
+        run: |
+          mkdir -Force build
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_CONFIGURATION_TYPES=RelWithDebInfo -DGEODE_DONT_INSTALL_MODS=ON
+          cmake --build build --config RelWithDebInfo
+
+      - name: Upload windows artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: geode-mod-windows
+          path: build/*.geode
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - name: macOS
+          os: macos-latest
+
+        - name: iOS
+          os: macos-latest
+          target: iOS
+
+        - name: Android32
+          os: ubuntu-latest
+          target: Android32
+
+        - name: Android64
+          os: ubuntu-latest
+          target: Android64
+
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the mod
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          combine: true
+          target: ${{ matrix.config.target }}
+
+  package:
+    name: Package builds
+    runs-on: ubuntu-latest
+    needs: ['build']
+
+    steps:
+      - uses: geode-sdk/build-geode-mod/combine@main
+        id: build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Build Output
+          path: ${{ steps.build.outputs.build-output }}
