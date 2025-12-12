@@ -1,0 +1,99 @@
+{
+	"geode": "4.10.0",
+	"gd": {
+		"win": "2.2074",
+		"android": "2.2074",
+		"mac": "2.2074",
+		"ios": "2.2074"
+	},
+	"id": "jarvisdevil.gstyle2",
+	"name": "GStyle2",
+	"version": "v1.0.0-beta.3",
+	"developer": "jarvisdevil",
+	"description": "The ultimate customization mod.",
+	"dependencies": {
+		"geode.node-ids": {
+			"importance": "required",
+			"version": ">=v1.20.0"
+		},
+		"prevter.imageplus": {
+			"importance": "required",
+			"version": ">=1.0.3"
+		}
+	},
+	"incompatibilities": {
+		"jarvisdevil.gstyle": {
+			"version": ">=v1.0.0",
+			"importance": "superseded"
+		}
+	},
+	"settings": {
+		"no_warn": {
+    		"type": "bool",
+    		"name": "I Understand",
+    		"description": "Removes the warning that displays on the GStyle2 menu.",
+			"default": false
+		},
+		"no_bg": {
+    		"type": "bool",
+    		"name": "No Background",
+    		"description": "Removes the background GIF that plays. This decreases loading time going into the menu for the first time on boot by about one second.",
+			"default": false
+		},
+		"no_bgm": {
+    		"type": "bool",
+    		"name": "No Background Music",
+    		"description": "Removes the background music that plays.",
+			"default": false
+		},
+		"alt_font": {
+			"type": "bool",
+			"name": "Alt Font",
+			"description": "Changes the font used in different GStyle2 menus.",
+			"default": false
+		}
+	},
+	"tags": ["universal", "customization", "content", "interface", "utility", "enhancement", "developer"],
+	"links": {
+		"community": "https://discord.gg/EygBPh6JwW",
+		"homepage": "https://jarvisdevil.com/?source=gstyle2",
+		"source": "https://github.com/thejarvisdevil/GStyle2"
+	},
+	"resources": {
+		"sprites": [
+			"resources/sprites/*.png"
+		],
+		"files": [
+			"resources/music/*.mp3",
+			"resources/sfx/*.mp3",
+			"resources/sprites/*.gif"
+		],
+        "fonts": {
+            "ArchivoBlack": {
+                "path": "resources/fonts/ArchivoBlack.ttf",
+                "size": 80
+            },
+            "BitcountGridDouble": {
+                "path": "resources/fonts/BitcountGridDouble.ttf",
+                "size": 80
+            },
+            "BitTrip": {
+                "path": "resources/fonts/BitTrip.ttf",
+                "size": 80
+            },
+            "Oswald": {
+                "path": "resources/fonts/Oswald.ttf",
+                "size": 80
+            },
+            "Roboto": {
+                "path": "resources/fonts/Roboto.ttf",
+                "size": 80
+            },
+            "ZalandoSansExpanded": {
+                "path": "resources/fonts/ZalandoSansExpanded.ttf",
+                "size": 80
+            }
+        }
+	}
+
+}
