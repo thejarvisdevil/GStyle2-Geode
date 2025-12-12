@@ -42,7 +42,7 @@ jobs:
       - name: Upload windows artifact
         uses: actions/upload-artifact@v5
         with:
-          name: geode-mod-windows
+          name: geode-build-win
           path: build/*.geode
   build:
     strategy:
