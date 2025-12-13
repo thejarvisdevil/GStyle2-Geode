@@ -68,18 +68,60 @@ public:
         auto win = CCDirector::get()->getWinSize();
 
         if (!Mod::get()->getSettingValue<bool>("no_bg")) {
-            auto bg = CCSprite::create("background.gif"_spr);
-            if (bg) {
-                bg->setPosition({win.width / 2.0f, win.height / 3.f});
-                bg->setScale(3.f);
-                bg->setOpacity(20);
-                bg->setID("background"_spr);
-                addChild(bg, -100);
+            CCSprite* bg = nullptr;
+
+            if (Mod::get()->getSettingValue<bool>("custom_bg")) {
+                auto bgpng = Mod::get()->getConfigDir(true) / "background.png";
+                auto bggif = Mod::get()->getConfigDir(true) / "background.gif";
+
+                if (std::filesystem::exists(bgpng)) {
+                    bg = CCSprite::create(geode::utils::string::pathToString(bgpng).c_str());
+                    if (bg) {
+                        bg->setPosition({ win.width / 2.f, win.height / 2.f });
+                        bg->setScale(3.f);
+                        bg->setID("background"_spr);
+                        addChild(bg, -100);
+                    }
+                } else if (std::filesystem::exists(bggif)) {
+                    bg = CCSprite::create(geode::utils::string::pathToString(bggif).c_str());
+                    if (bg) {
+                        bg->setPosition({ win.width / 2.f, win.height / 2.f });
+                        bg->setScale(3.f);
+                        bg->setID("background"_spr);
+                        addChild(bg, -100);
+                    }
+                } else {
+                    bg = CCSprite::create("background.gif"_spr);
+                    if (bg) {
+                        bg->setPosition({ win.width / 2.f, win.height / 3.f });
+                        bg->setScale(3.f);
+                        bg->setOpacity(20);
+                        bg->setID("background"_spr);
+                        addChild(bg, -100);
+                    }
+                }
+            } else {
+                bg = CCSprite::create("background.gif"_spr);
+                if (bg) {
+                    bg->setPosition({ win.width / 2.f, win.height / 3.f });
+                    bg->setScale(3.f);
+                    bg->setOpacity(20);
+                    bg->setID("background"_spr);
+                    addChild(bg, -100);
+                }
             }
         }
 
         if (!Mod::get()->getSettingValue<bool>("no_bgm")) {
-            FMODAudioEngine::sharedEngine()->playMusic("SlideshowScenic.mp3"_spr, true, 1.0f, 0);
+            if (Mod::get()->getSettingValue<bool>("custom_bgm")) {
+                if (std::filesystem::exists(Mod::get()->getConfigDir(true) / "music.mp3")) {
+                    FMODAudioEngine::sharedEngine()->playMusic(geode::utils::string::pathToString(Mod::get()->getConfigDir(true) / "music.mp3"), true, 1.0f, 0);
+                }
+            } else if (Mod::get()->getSettingValue<bool>("old_bgm")) {
+                FMODAudioEngine::sharedEngine()->playMusic("StarStriker.mp3"_spr, true, 1.0f, 0);
+            } else {
+                FMODAudioEngine::sharedEngine()->playMusic("SlideshowScenic.mp3"_spr, true, 1.0f, 0);
+            }
         }
 
         auto discord = CCSprite::createWithSpriteFrameName("gj_discordIcon_001.png");
@@ -95,7 +137,12 @@ public:
 
         auto sidebar = CCDrawNode::create();
         if (sidebar) {
-            sidebar->drawRect({0,0}, {win.width * 0.10f, win.height}, {0,0,0.1f,1}, 0, {0,0,1,1});
+            auto color = Mod::get()->getSettingValue<cocos2d::ccColor4B>("sidebar_color");
+            if (color.r != 0 || color.g != 0 || color.b != 26 || color.a != 255) {
+                sidebar->drawRect({0,0}, {win.width * 0.10f, win.height}, {color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f}, 0, {0,0,1,1});
+            } else {
+                sidebar->drawRect({0,0}, {win.width * 0.10f, win.height}, {0,0,0.1f,1}, 0, {0,0,1,1});
+            }
             sidebar->setID("sidebar"_spr);
             addChild(sidebar, -100);
         }

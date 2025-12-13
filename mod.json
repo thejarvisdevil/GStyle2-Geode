@@ -8,7 +8,7 @@
 	},
 	"id": "jarvisdevil.gstyle2",
 	"name": "GStyle2",
-	"version": "v1.0.0-beta.3",
+	"version": "v1.0.0-beta.4",
 	"developer": "jarvisdevil",
 	"description": "The ultimate customization mod.",
 	"dependencies": {
@@ -28,28 +28,64 @@
 		}
 	},
 	"settings": {
+        "yes_jarvisdevil_i_know": {
+            "type": "title",
+            "name": "I Understand"
+        },
 		"no_warn": {
     		"type": "bool",
     		"name": "I Understand",
     		"description": "Removes the warning that displays on the GStyle2 menu.",
 			"default": false
 		},
+        "customize_gs2": {
+            "type": "title",
+            "name": "Customize GStyle2 Menu"
+        },
 		"no_bg": {
     		"type": "bool",
     		"name": "No Background",
     		"description": "Removes the background GIF that plays. This decreases loading time going into the menu for the first time on boot by about one second.",
 			"default": false
 		},
+		"custom_bg": {
+			"type": "bool",
+			"name": "Custom Background",
+			"description": "Uses a custom background from [mod config dir]/background.png or [mod config dir]/background.gif.",
+			"default": false
+		},
+		"alt_font": {
+			"type": "bool",
+			"name": "Alt Font",
+			"description": "Changes the font used in different GStyle2 menus to Pusab.",
+			"default": false
+		},
+		"sidebar_color": {
+			"type": "rgba",
+			"name": "Sidebar Color",
+			"description": "Changes the color of the sidebar in the GStyle2 menu.",
+			"default": [0,0,26,255]
+		},
+        "music_gs2": {
+            "type": "title",
+            "name": "Customize GStyle2 BGM"
+        },
 		"no_bgm": {
     		"type": "bool",
     		"name": "No Background Music",
     		"description": "Removes the background music that plays.",
 			"default": false
 		},
-		"alt_font": {
-			"type": "bool",
-			"name": "Alt Font",
-			"description": "Changes the font used in different GStyle2 menus.",
+		"old_bgm": {
+    		"type": "bool",
+    		"name": "Old Background Music",
+    		"description": "Uses the old background music that plays. (This BGM was used before GStyle2 was publicly released)",
+			"default": false
+		},
+		"custom_bgm": {
+    		"type": "bool",
+    		"name": "Custom BGM",
+    		"description": "Plays custom music from [mod config dir]/music.mp3.",
 			"default": false
 		}
 	},
@@ -57,7 +93,7 @@
 	"links": {
 		"community": "https://discord.gg/EygBPh6JwW",
 		"homepage": "https://jarvisdevil.com/?source=gstyle2",
-		"source": "https://github.com/thejarvisdevil/GStyle2"
+		"source": "https://github.com/thejarvisdevil/GStyle2-Geode"
 	},
 	"resources": {
 		"sprites": [
