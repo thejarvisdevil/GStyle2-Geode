@@ -12,10 +12,6 @@
 #include "gs2/for.hpp"
 #include "gs2/gs2.hpp"
 
-// wip:
-// fix certain textures such as loading textures from not loading gs2 pack textures/
-// make it refresh textures if needed when going outside of gs2 menu
-
 using namespace geode::prelude;
 namespace fs = std::filesystem;
 
@@ -350,4 +346,5 @@ $execute {
     } catch (...) {
         geode::log::error("checkPacks sucks idk");
     }
+
 }
