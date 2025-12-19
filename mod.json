@@ -89,6 +89,7 @@
 			"default": false
 		}
 	},
+	"early-load": true,
 	"tags": ["universal", "customization", "content", "interface", "utility", "enhancement", "developer"],
 	"links": {
 		"community": "https://discord.gg/EygBPh6JwW",
@@ -131,5 +132,4 @@
             }
         }
 	}
-
 }

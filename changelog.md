@@ -1,3 +1,6 @@
+# 1.0.0-beta.5
+- gs2 pack: support for loading texture packs from the /textures folder of a gstyle2 pack
+
 # 1.0.0-beta.4
 - gs2 menu: organized settings a bit
 - gs2 menu: choose custom png/gif background and mp3 bgm

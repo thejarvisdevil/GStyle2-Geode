@@ -1,13 +1,20 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
 #include <Geode/binding/FMODAudioEngine.hpp>
+#include <Geode/binding/GameManager.hpp>
 #include <Geode/ui/GeodeUI.hpp>
+#include <Geode/utils/cocos.hpp>
 #include <filesystem>
 #include "menus/MyPacks.hpp"
 #include "menus/DownloadPacks.hpp"
 #include "menus/Credits.hpp"
 #include "menus/Developer.hpp"
 #include "gs2/for.hpp"
+#include "gs2/gs2.hpp"
+
+// wip:
+// fix certain textures such as loading textures from not loading gs2 pack textures/
+// make it refresh textures if needed when going outside of gs2 menu
 
 using namespace geode::prelude;
 namespace fs = std::filesystem;
@@ -20,6 +27,14 @@ void checkPacks() {
         fs::create_directory(packsDir, ec);
     }
 
+    auto enabled = gs2::getEnabled();
+    std::vector<std::string> yippeePacks;
+    for (auto &p : enabled) yippeePacks.push_back(p.second);
+    auto kanye = Mod::get()->getConfigDir(true) / "active_packs.txt";
+    if (fs::exists(kanye) && yippeePacks.empty()) {
+        return;
+    }
+
     size_t count = 0;
     std::error_code bruhmoment;
     for (fs::directory_iterator it(packsDir, bruhmoment); it != fs::directory_iterator(); it.increment(bruhmoment)) {
@@ -27,7 +42,6 @@ void checkPacks() {
         const auto &entry = *it;
         std::error_code bruhmoment2;
         if (!entry.is_directory(bruhmoment2) || bruhmoment2) continue;
-
         auto filename = gs2::pathToString(entry.path().filename());
 
         std::error_code f1, f2, f3;
@@ -38,6 +52,23 @@ void checkPacks() {
         if (fileone && filetwo && filethethird) {
             log::info("Found GStyle2 Pack: '{}'", filename);
             ++count;
+            try {
+                if (std::find(yippeePacks.begin(), yippeePacks.end(), filename) == yippeePacks.end()) continue;
+
+                auto texdir = entry.path() / "textures";
+                std::error_code texec;
+                if (fs::exists(texdir, texec) && fs::is_directory(texdir, texec) && !texec) {
+                    CCFileUtils::get()->addTexturePack(CCTexturePack{
+                        .m_id = filename,
+                        .m_paths = { gs2::pathToString(texdir) }
+                    });
+                    log::info("Applied custom textures from pack: '{}'", filename);
+                }
+            } catch (const std::exception &e) {
+                log::warn("Failed to apply textures for pack '{}': {}", filename, e.what());
+            } catch (...) {
+                log::warn("Failed to apply textures for pack '{}': unknown error", filename);
+            }
         }
     }
 

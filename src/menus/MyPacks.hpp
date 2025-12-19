@@ -131,6 +131,11 @@ namespace menus {
                     int idx = page * 4 + i;
                     if (idx >= 0 && idx < (int)packs.size()) {
                         auto name = gs2::pathToString(packs[idx].filename());
+                        try {
+                            if (fs::exists(packs[idx] / "textures") && fs::is_directory(packs[idx] / "textures")) {
+                                FLAlertLayer::create("Woah There!", "<cy>This GStyle2 pack contains textures.</c> <cl>You will have to restart Geometry Dash for it to fully take effect.</c>", "OK")->show();
+                            }
+                        } catch(...) {}
                         if (enabledPacks.count(name)) enabledPacks.erase(name); else enabledPacks.insert(name);
                         activaCam();
                         drawPage();
