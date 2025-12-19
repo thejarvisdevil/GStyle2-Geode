@@ -8,7 +8,7 @@
 	},
 	"id": "jarvisdevil.gstyle2",
 	"name": "GStyle2",
-	"version": "v1.0.0-beta.4",
+	"version": "v1.0.0-beta.5",
 	"developer": "jarvisdevil",
 	"description": "The ultimate customization mod.",
 	"dependencies": {
@@ -132,4 +132,5 @@
             }
         }
 	}
+
 }
